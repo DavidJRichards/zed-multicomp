@@ -132,7 +132,7 @@ do => cpuDataOut);
 	rom1 : entity work.rom -- 8KB BASIC
 	generic map (
 	   G_ADDR_BITS => 13,
-	   G_INIT_FILE => "D:\code\multicomp\ROMS\Z80\z80-CPM-basic.hex"
+	   G_INIT_FILE => "/home/david/Documents/GitHub/zed-multicomp/ROMS/Z80/z80-CPM-basic.hex"
 	)
     port map(
         addr_i => cpuAddress(12 downto 0),

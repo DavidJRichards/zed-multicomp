@@ -271,7 +271,7 @@ begin
 	fontRom : entity work.rom -- 1KB FONT ROM
 	generic map (
 	   G_ADDR_BITS => 10,
-	   G_INIT_FILE => "D:/code/multicomp/Components/TERMINAL/CGAFontBoldReduced-x.hex"
+	   G_INIT_FILE => "/home/david/Documents/GitHub/zed-multicomp/Components/TERMINAL/CGAFontBoldReduced-x.hex"
 	)
     port map(
         addr_i => charAddr(9 downto 0),
