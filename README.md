@@ -1,3 +1,13 @@
+# EBAZ4205 version of multicomp
+
+33MHz fed into N18 of PL from PS clock
+PLL divisor adjusted accordingley
+I/O remapped to EBAZ4205 data connetcors
+
+![Alt text](MulticompPinMap.png)
+
+
+
 # Zed-Multicomp
 Zedboard implementation of multicomp. The zedboard has enough block ram to support the full 64k using internal ram. The ram code and memory map has been amended accordingly. Some of the memory and clocking routines are based on work by Michael Jørgensen.
 

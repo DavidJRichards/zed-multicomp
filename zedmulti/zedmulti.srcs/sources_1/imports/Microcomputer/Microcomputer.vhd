@@ -42,6 +42,7 @@ entity Microcomputer is
 		sdMISO		: in std_logic;
 		sdSCLK		: out std_logic;
 		driveLED		: out std_logic :='1';
+		otherLED        : out std_logic :='1';
 		
 		rxd1			: in std_logic;
 		txd1			: out std_logic;
@@ -98,6 +99,7 @@ begin
 --CPM
 -- Disable ROM if out 38. Re-enable when (asynchronous) reset pressed
 process (n_ioWR, n_reset) begin
+otherLED <= n_reset;
 if (n_reset = '0') then
 n_RomActive <= '0';
 elsif (rising_edge(n_ioWR)) then
@@ -240,8 +242,10 @@ n_memRD <= n_RD or n_MREQ;
 -- CHIP SELECTS GO HERE
 
 n_basRomCS <= '0' when cpuAddress(15 downto 13) = "000" and n_RomActive = '0' else '1'; --8K at bottom of memory
-n_interface1CS <= '0' when cpuAddress(7 downto 1) = "1000000" and (n_ioWR='0' or n_ioRD = '0') else '1'; -- 2 Bytes $80-$81
-n_interface2CS <= '0' when cpuAddress(7 downto 1) = "1000001" and (n_ioWR='0' or n_ioRD = '0') else '1'; -- 2 Bytes $82-$83
+--n_interface1CS <= '0' when cpuAddress(7 downto 1) = "1000000" and (n_ioWR='0' or n_ioRD = '0') else '1'; -- 2 Bytes $80-$81
+--n_interface2CS <= '0' when cpuAddress(7 downto 1) = "1000001" and (n_ioWR='0' or n_ioRD = '0') else '1'; -- 2 Bytes $82-$83
+n_interface2CS <= '0' when cpuAddress(7 downto 1) = "1000000" and (n_ioWR='0' or n_ioRD = '0') else '1'; -- 2 Bytes $80-$81
+n_interface1CS <= '0' when cpuAddress(7 downto 1) = "1000001" and (n_ioWR='0' or n_ioRD = '0') else '1'; -- 2 Bytes $82-$83
 n_sdCardCS <= '0' when cpuAddress(7 downto 3) = "10001" and (n_ioWR='0' or n_ioRD = '0') else '1'; -- 8 Bytes $88-$8F
 n_internalRam1CS <= not n_basRomCS;
 -- ____________________________________________________________________________________
