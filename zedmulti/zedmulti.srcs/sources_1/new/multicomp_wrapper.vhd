@@ -51,6 +51,7 @@ port(
 		sdMISO		: in std_logic;
 		sdSCLK		: out std_logic;
 		driveLED		: out std_logic :='1';
+		otherLED        : out std_logic;
 		
 		rxd1			: in std_logic;
 		txd1			: out std_logic;
@@ -81,7 +82,7 @@ begin
  computer: entity work.Microcomputer 
     port map (
         
-        n_reset	=> not reset,
+        n_reset	=> reset,
 		clk	=> clk50,
 		vgaClock => clk25,
 		cpuClock => clk25,
@@ -102,6 +103,7 @@ begin
 		sdMISO => sdMISO,
 		sdSCLK => sdSCLK,
 		driveLED => driveLED,
+		otherLED => otherLED,
 		
 		rxd1 => rxd1,
 		txd1 => txd1,

@@ -11,22 +11,21 @@ set_property -dict {PACKAGE_PIN U20 IOSTANDARD LVCMOS33} [get_ports hSync]
 set_property -dict {PACKAGE_PIN V20 IOSTANDARD LVCMOS33} [get_ports vSync]
 
 #NET BTNC          LOC = P16  | IOSTANDARD=LVCMOS18;  # "BTNC"
-# review A17
-set_property -dict {PACKAGE_PIN D20 IOSTANDARD LVCMOS33} [get_ports reset] 
+set_property -dict {PACKAGE_PIN K18 IOSTANDARD LVCMOS33} [get_ports reset] 
 set_property PULLUP true [get_ports reset]
 
 #JA PMOD has a ps2 pmod
-set_property -dict {PACKAGE_PIN B19 IOSTANDARD LVCMOS33} [get_ports ps2Data] 
-set_property -dict {PACKAGE_PIN A20 IOSTANDARD LVCMOS33} [get_ports ps2Clk]
+set_property -dict {PACKAGE_PIN V13 IOSTANDARD LVCMOS33} [get_ports ps2Data] 
+set_property -dict {PACKAGE_PIN U12 IOSTANDARD LVCMOS33} [get_ports ps2Clk]
 set_property PULLUP true [get_ports ps2Clk]
 set_property PULLUP true [get_ports ps2Data]
 
 #UART JB
-set_property -dict {PACKAGE_PIN F19 IOSTANDARD LVCMOS33 } [get_ports {rxd1}]
+set_property -dict {PACKAGE_PIN V15 IOSTANDARD LVCMOS33 } [get_ports {rxd1}]
 #NET JB1           LOC = W12  | IOSTANDARD=LVCMOS33;  # "JB1"
-set_property -dict {PACKAGE_PIN F20 IOSTANDARD LVCMOS33 } [get_ports {txd1}]
+set_property -dict {PACKAGE_PIN V12 IOSTANDARD LVCMOS33 } [get_ports {txd1}]
 #NET JB2           LOC = W11  | IOSTANDARD=LVCMOS33;  # "JB2"
-set_property -dict {PACKAGE_PIN H18 IOSTANDARD LVCMOS33 } [get_ports {rts1}]
+set_property -dict {PACKAGE_PIN J19 IOSTANDARD LVCMOS33 } [get_ports {rts1}]
 #NET JB3           LOC = V10  | IOSTANDARD=LVCMOS33;  # "JB3"
 
 #JD PMOD has a sd card pmod, led 0 is drive led
@@ -52,5 +51,4 @@ set_property PACKAGE_PIN N18 [get_ports sys_clock]
 set_property IOSTANDARD LVCMOS33 [get_ports sys_clock]
 
 # Clock definition
-#create_clock -name sys_clk -period 10.00 [get_ports {sys_clock}];                          # 100 MHz
 create_clock -name sys_clk -period 30.00 [get_ports {sys_clock}];                          # 33.333 MHz
