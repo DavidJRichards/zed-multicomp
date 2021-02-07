@@ -4,8 +4,84 @@
 PLL divisor adjusted accordingley
 I/O remapped to EBAZ4205 data connetcors
 
-![Alt text](MulticompPinMap.png)
+## load bitstream from sd-card with u-boot
 
+```
+Hit any key to stop autoboot:  0 
+Zynq> set loadbit_addr 0x100000
+Zynq> set bitstream_image multicomp_wrapper.bit
+Zynq> load mmc 0 ${loadbit_addr} ${bitstream_image}
+2083853 bytes read in 135 ms (14.7 MiB/s)
+Zynq> fpga loadb 0 ${loadbit_addr} ${filesize}
+  design filename = "multicomp_wrapper;UserID=0XFFFFFFFF;Version=2020.2"
+  part number = "7z010clg400"
+  date = "2021/01/16"
+  time = "23:30:32"
+  bytes in bitstream = 2083740
+zynq_align_dma_buffer: Align buffer at 100071 to fff80(swap 1)
+INFO:post config was not run, please run manually if needed
+Zynq> 
+```
+
+Multicomp is then active in two consoles, VGA and Serial
+```
+Press [SPACE] to activate console
+
+CP/M Boot ROM 2.0 by G. Searle
+BC or BW - ROM BASIC Cold/Warm
+X        - Boot CP/M (load $D000-$FFFF)
+:nnnn... - Load Intel-Hex file record
+Gnnnn    - Run loc nnnn
+>
+```
+
+## save bitstream into nand flash from u-boot prompt
+
+Instead of loading a bitstream from sd-card or tftp, jtag, etc it can be saved into an unused area of nand flash for loading later during the boot process. 
+
+The command below were issued from the u-boot interrupted during boot from nand or in this case whilst booting from sd-card. 
+
+```
+set loadbit_addr 0x100000
+set bitstream_image multicomp_wrapper.bit
+load mmc 0 ${loadbit_addr} ${bitstream_image}
+echo ${filesize}
+set nand_offset 0x7000000
+nand device 0
+nand erase ${nand_offset} ${filesize}
+nand write ${loadbit_addr} ${nand_offset} ${filesize}
+```
+
+## load bitstream from nand flash at boot time
+
+Note: filesize must be at least the size of the saved bitstream, us avtual size 0x1fcc0d or 0x200000
+
+```
+set nand_offset 0x7000000
+set loadbit_addr 0x100000
+set filesize 0x1fcc0d
+nand read ${loadbit_addr} ${nand_offset} ${filesize}
+fpga loadb 0 ${loadbit_addr} ${filesize}
+```
+
+## automatically load new bitstream at boot time
+
+To fully automate the use of a new buitstream the boot setting need to be changed, one simple way to do this is by adding an override to the u-boot enviorenment to be loaded at boot time in the file boot.scr which is loaded if it exists when u-boot executes.
+
+boot.scr is a compiled version of boot.cmd. it can have the commands in it to load the bitstream from nand similar to whet is shown above, and then compiled with the command below:
+
+```
+set loadbit_addr 0x100000
+set bitstream_image multicomp_wrapper.bit
+load mmc 0 ${loadbit_addr} ${bitstream_image}
+fpga loadb 0 ${loadbit_addr} ${filesize}
+```
+
+```
+mkimage -c none -A arm -T script -d boot.cmd boot.scr
+```
+
+![Alt text](MulticompPinMap.png)
 
 
 # Zed-Multicomp
